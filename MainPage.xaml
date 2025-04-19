@@ -2,57 +2,114 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="InventorySystems.MainPage"
-             Padding="20">
+             BackgroundColor="#1e1e1e">
 
-    <!-- Main Grid -->
-    <Grid Margin="0,20,0,0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <!-- For Welcome Label -->
-            <RowDefinition Height="Auto" />
-            <!-- For SearchBar -->
-            <RowDefinition Height="*" />
-            <!-- For ItemGrid (Remaining space) -->
-        </Grid.RowDefinitions>
+    <ScrollView>
+        <StackLayout Padding="20">
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+            <SearchBar x:Name="ProductSearchBar"
+                       Placeholder="Search products..."
+                       BackgroundColor="#3c3c3c"
+                       TextColor="#ffffff"
+                       PlaceholderColor="#bbbbbb"
+                       TextChanged="OnSearchTextChanged"
+                       Margin="0,0,0,20" />
 
-        <!-- Welcome Message -->
-        <Label x:Name="WelcomeLabel" Text="Welcome, [username]!"
-               FontSize="24" FontAttributes="Bold"
-               HorizontalOptions="Center" 
-               Grid.Row="0" Grid.Column="0"/>
+            <Entry x:Name="ProductNameEntry"
+                   Placeholder="Enter product name"
+                   BackgroundColor="#3c3c3c"
+                   TextColor="#ffffff"
+                   PlaceholderColor="#bbbbbb" />
 
-        <!-- Search Functionality -->
-        <SearchBar x:Name="ItemSearchBar" 
-                   Placeholder="Search for an item"
-                   TextChanged="OnSearchTextChanged"
-                   Grid.Row="1" Grid.Column="0" />
+            <Entry x:Name="DescriptionEntry"
+                   Placeholder="Enter product description"
+                   BackgroundColor="#3c3c3c"
+                   TextColor="#ffffff"
+                   PlaceholderColor="#bbbbbb" />
 
-        <!-- Item Grid for 5 columns and 8 rows -->
-        <Grid x:Name="ItemGrid" RowSpacing="10" ColumnSpacing="10" Grid.Row="2" Grid.Column="0" Margin="0,20,0,0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
+            <Entry x:Name="CategoryEntry"
+                   Placeholder="Enter category"
+                   BackgroundColor="#3c3c3c"
+                   TextColor="#ffffff"
+                   PlaceholderColor="#bbbbbb" />
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+            <Entry x:Name="SupplierIdEntry"
+                   Placeholder="Enter Supplier ID"
+                   Keyboard="Numeric"
+                   BackgroundColor="#3c3c3c"
+                   TextColor="#ffffff"
+                   PlaceholderColor="#bbbbbb" />
 
-            <!-- Sample Item Entries (5 columns, 8 rows) -->
-            <Grid x:Name="ItemGridContent" Grid.Row="0" Grid.ColumnSpan="5" />
-        </Grid>
-    </Grid>
+            <Entry x:Name="UnitPriceEntry"
+                   Placeholder="Enter unit price"
+                   Keyboard="Numeric"
+                   BackgroundColor="#3c3c3c"
+                   TextColor="#ffffff"
+                   PlaceholderColor="#bbbbbb" />
+
+            <Entry x:Name="StockQuantityEntry"
+                   Placeholder="Enter stock quantity"
+                   Keyboard="Numeric"
+                   BackgroundColor="#3c3c3c"
+                   TextColor="#ffffff"
+                   PlaceholderColor="#bbbbbb" />
+
+            <Button Text="Add Product"
+                    BackgroundColor="#f0a500"
+                    TextColor="#ffffff"
+                    Clicked="AddProductClicked"
+                    Margin="0,20,0,20" />
+
+            <CollectionView x:Name="ProductCollectionView">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BorderColor="LightGray" CornerRadius="10" Margin="10">
+                            <Grid ColumnDefinitions="*, Auto">
+                                <!-- Left: Product Info -->
+                                <StackLayout Grid.Column="0" Padding="10" Spacing="5">
+                                    <Label Text="{Binding ProductName}" FontAttributes="Bold" FontSize="18" />
+                                    <Label Text="{Binding Description}" FontSize="14" />
+                                    <Label Text="Category:" FontSize="14" />
+                                    <Label Text="{Binding Category}" FontSize="14" />
+                                    <Label Text="Price:" FontSize="14" />
+                                    <Label Text="{Binding UnitPrice, StringFormat='{}{0:C}'}" FontSize="14" />
+                                    <Label Text="In Stock:" FontSize="14" />
+                                    <Label Text="{Binding StockQuantity}" FontSize="14" />
+                                </StackLayout>
+
+                                <!-- Right: Quantity Input + Buy/Sell/Delete -->
+                                <StackLayout Grid.Column="1" Padding="10" Spacing="5" HorizontalOptions="End">
+                                    <Label Text="Qty" FontSize="14" HorizontalOptions="Center" />
+                                    <Entry ClassId="QuantityEntry"
+                       Text="1"
+                       Keyboard="Numeric"
+                       WidthRequest="60"
+                       HorizontalOptions="Center" />
+
+                                    <Button Text="Buy"
+                        BackgroundColor="LightGreen"
+                        BindingContext="{Binding}"
+                        Clicked="AdjustValue" />
+
+                                    <Button Text="Sell"
+                        BackgroundColor="LightCoral"
+                        BindingContext="{Binding}"
+                        Clicked="AdjustValue" />
+
+                                    <Button Text="Delete"
+                        BackgroundColor="Gray"
+                        BindingContext="{Binding}"
+                        Clicked="DeleteProductClicked" />
+                                </StackLayout>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+
+
+        </StackLayout>
+    </ScrollView>
 </ContentPage>

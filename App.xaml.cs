@@ -1,22 +1,20 @@
 ﻿using Microsoft.Maui.Controls;
+using InventorySystems.Data;
 
 namespace InventorySystems
 {
     public partial class App : Application
     {
-        public static string DatabasePath { get; private set; }
-
         public App()
         {
             InitializeComponent();
 
-            DatabasePath = Path.Combine(FileSystem.AppDataDirectory, "inventsys.db");
-            //database file name via what was sent in the discord//
+            // Initialize the Query class with the database path
+            string dbPath = System.IO.Path.Combine(FileSystem.AppDataDirectory, "inventsys.db");
+            var query = new Query(dbPath);  // Use the correct path for the database file
 
-            DependencyService.Register<UserService>();
-
-            MainPage = new NavigationPage(new LoginPage());
+            // Use the query object to initialize the LoginPage without DatabaseContext
+            MainPage = new NavigationPage(new LoginPage(query));  // Pass query instead of databaseContext
         }
     }
-
 }

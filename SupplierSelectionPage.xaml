@@ -1,0 +1,18 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="InventorySystems.SupplierSelectionPage">
+
+    <StackLayout Padding="10">
+        <!-- ListView to display suppliers -->
+        <ListView x:Name="SupplierListView" ItemSelected="OnSupplierSelected">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding SupplierName}" Detail="{Binding ContactName}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <!-- Button to add a new supplier -->
+        <Button Text="Add Supplier" Clicked="OnAddSupplierClicked" />
+    </StackLayout>
+</ContentPage>

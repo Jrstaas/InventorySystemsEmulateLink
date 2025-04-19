@@ -1,15 +1,55 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="InventorySystems.LoginPage">
+             x:Class="InventorySystems.LoginPage"
+             BackgroundColor="#1e1e1e">
 
-    <StackLayout Padding="30">
-        <Label Text="Login" FontSize="30" HorizontalOptions="Center" />
+    <StackLayout Padding="20" VerticalOptions="CenterAndExpand">
 
-        <Entry x:Name="usernameEntry" Placeholder="Username" Completed="OnLoginEntryCompleted" />
-        <Entry x:Name="passwordEntry" Placeholder="Password" IsPassword="True" Completed="OnLoginEntryCompleted" />
+        <!-- Retro Login Title -->
+        <Label Text="Access Your Database"
+               FontSize="32"
+               FontAttributes="Bold"
+               TextColor="#f0a500"
+               HorizontalTextAlignment="Center"
+               Margin="0,0,0,40" />
 
-        <Button Text="Login" Clicked="OnLoginClicked"
-                BackgroundColor="Blue" TextColor="White" />
+        <!-- Username Entry with Retro Styling -->
+        <Entry x:Name="Username"
+               Placeholder="Username"
+               BackgroundColor="#3c3c3c"
+               TextColor="#ffffff"
+               PlaceholderColor="#bbbbbb"
+               FontSize="18"
+               HorizontalTextAlignment="Center"
+               Margin="0,10"
+               HeightRequest="45" />
+
+        <!-- Password Entry with Retro Styling -->
+        <Entry x:Name="PasswordHash"
+               Placeholder="Password"
+               IsPassword="True"
+               BackgroundColor="#3c3c3c"
+               TextColor="#ffffff"
+               PlaceholderColor="#bbbbbb"
+               FontSize="18"
+               HorizontalTextAlignment="Center"
+               Margin="0,10"
+               HeightRequest="45" />
+
+        <!-- Retro Login Button -->
+        <Button Text="Login"
+                BackgroundColor="#f0a500"
+                TextColor="#ffffff"
+                FontSize="20"
+                Clicked="OnLoginButtonClicked"
+                HeightRequest="50"
+                Margin="0,20" />
+
+        <!-- Retro Footer -->
+        <Label Text="© 2025 Retro Inventory Systems"
+               FontSize="12"
+               TextColor="#bbbbbb"
+               HorizontalTextAlignment="Center"
+               Margin="0,30" />
     </StackLayout>
 </ContentPage>

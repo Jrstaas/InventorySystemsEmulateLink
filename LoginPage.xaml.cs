@@ -1,51 +1,67 @@
 using Microsoft.Maui.Controls;
+using InventorySystems.Data;
+using InventorySystems.Models;
 using System;
+using System.Threading.Tasks;
 
 namespace InventorySystems
 {
     public partial class LoginPage : ContentPage
     {
-        private UserService _userService;
+        private readonly Query _query;
 
-        public LoginPage()
+        public LoginPage(Query query)
         {
-            InitializeComponent();
-            _userService = new UserService(App.DatabasePath); // Set up the UserService with the database path
+            try
+            {
+                InitializeComponent();
+                string dbPath = System.IO.Path.Combine(FileSystem.AppDataDirectory, "inventsys.db");
+                _query = new Query(dbPath); // Initialize your Query class with the database path
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in LoginPage constructor: {ex.Message}");
+            }
         }
 
-        private async void OnLoginClicked(object sender, EventArgs e)
+        // Login button clicked
+        private async void OnLoginButtonClicked(object sender, EventArgs e)
         {
-            string enteredUsername = usernameEntry.Text;
-            string enteredPassword = passwordEntry.Text;
+            var username = Username.Text;
+            var password = PasswordHash.Text; // The entered password (no hashing)
 
-            // Hash the entered password before checking (assuming you hash passwords for security)
-            string hashedPassword = HashPassword(enteredPassword);
-
-            var user = await _userService.CheckUserLogin(enteredUsername, hashedPassword);
+            // Call the ValidateUserLogin method in Query class
+            var user = await _query.ValidateUserLoginAsync(username, password);
 
             if (user != null)
             {
-                // If valid, navigate to MainPage, passing UserService
-                await Navigation.PushAsync(new MainPage(enteredUsername, _userService));
+                // Successful login, access user properties
+                var userId = user.UserID;
+                var usernameHash = user.Username;
+
+                // Proceed to the main page, passing user details
+                await Navigation.PushAsync(new MainPage(userId, usernameHash, _query));
             }
             else
             {
-                // Show error if invalid
-                await DisplayAlert("Login Failed", "Invalid username or password. Please try again.", "OK");
+                // Failed login, show error message
+                await DisplayAlert("Error", "Invalid username or password", "OK");
             }
         }
 
-        private string HashPassword(string password)
-        {
-            // For now, just return the password as is, use a secure hash method in production
-            return password;
-        }
-
-        // Event handler for Entry Completed event
+        // Event handler for Entry Completed event (Trigger login on Enter)
         private void OnLoginEntryCompleted(object sender, EventArgs e)
         {
-            // You can either trigger the OnLoginClicked method directly or add other logic
-            OnLoginClicked(sender, e);
+            // Trigger OnLoginButtonClicked when Enter key is pressed
+            OnLoginButtonClicked(sender, e);
+        }
+
+        // Navigate to the page where users can select and delete their account
+        private async void OnRemoveUserClicked(object sender, EventArgs e)
+        {
+            string dbPath = FileSystem.AppDataDirectory + "/inventsys.db";
+            // Navigate to the SelectUserPage where the user can select their account
+            await Navigation.PushAsync(new SelectUserPage(dbPath));
         }
     }
 }
